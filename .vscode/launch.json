@@ -1,0 +1,21 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "Launch Program",
+            "program": "${workspaceFolder}/bin/elasticdump",
+            "args": [
+                "--input=http://test.sendo.vn:3000/",
+                "--input-index=sendo_new_filter_left_v8/shop",
+                "--output=http://elastic:changeme@localhost:9200/",
+                "--output-index=sendo_new_filter_left_v8/shop",
+                "--type=data"
+            ]
+        }
+    ]
+}
