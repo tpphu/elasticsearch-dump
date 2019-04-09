@@ -10,10 +10,18 @@
             "name": "Launch Program",
             "program": "${workspaceFolder}/bin/elasticdump",
             "args": [
-                "--input=http://test.sendo.vn:3000/",
-                "--input-index=sendo_new_filter_left_v8/shop",
-                "--output=http://elastic:changeme@localhost:9200/",
-                "--output-index=sendo_new_filter_left_v8/shop",
+                "--input",
+                "http://test.sendo.vn:3000/",
+                "--input-index",
+                "sendo_new_filter_left_v8/shop",
+                "--output",
+                "http://elastic:changeme@localhost:9200/",
+                "--output-index",
+                "sendo_new_filter_left_v8/shop",
+                "--searchBody",
+                "{\"query\":{\"range\":{\"Updated_at\": {\"lte\": 1554778425}}}, \"fields\": [\"*\"], \"_source\": true}",
+                "--params",
+                "{\"preference\": \"_shards:0\"}",
                 "--type=data"
             ]
         }
