@@ -507,7 +507,7 @@ Built at [TaskRabbit](https://www.taskrabbit.com)
 
 ```shell
 ./bin/elasticdump \
-  --input=http://test.sendo.vn:3000/ \
+  --input=http://localhost:3000/ \
   --input-index=sendo_new_filter_left_v8/product \
   --output=http://elastic:changeme@localhost:9200/ \
   --output-index=sendo_new_filter_left_v8/product \
@@ -523,7 +523,7 @@ Built at [TaskRabbit](https://www.taskrabbit.com)
 
 ```shell
 ./bin/elasticdump \
-  --input=http://test.sendo.vn:3000/ \
+  --input=http://localhost:3000/ \
   --input-index=sendo_new_filter_left_v8/product \
   --output=http://elastic:changeme@localhost:9200/ \
   --output-index=sendo_new_filter_left_v8/product \
