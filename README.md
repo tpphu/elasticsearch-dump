@@ -500,3 +500,29 @@ An example transform for anonymizing data on-the-fly can be found in the `transf
 Inspired by https://github.com/crate/elasticsearch-inout-plugin and https://github.com/jprante/elasticsearch-knapsack
 
 Built at [TaskRabbit](https://www.taskrabbit.com)
+
+## Sendo Note
+
+./bin/elasticdump \
+  --input=http://test.sendo.vn:3000/ \
+  --input-index=sendo_new_filter_left_v8/product \
+  --output=http://elastic:changeme@localhost:9200/ \
+  --output-index=sendo_new_filter_left_v8/product \
+  --searchBody='{"query":{"bool":{"must":[{"range":{"Updated_at":{"lte":1554778425}}}]}}, "fields": ["*"], "_source": true}' \
+  --offsetFieldName=External_id \
+  --params='{"preference": "_shards:0"}' \
+  --limit=20 \
+  --offset=0 \
+  --type=data
+
+./bin/elasticdump \
+  --input=http://test.sendo.vn:3000/ \
+  --input-index=sendo_new_filter_left_v8/product \
+  --output=http://elastic:changeme@localhost:9200/ \
+  --output-index=sendo_new_filter_left_v8/product \
+  --searchBody='{"query":{"bool":{"must":[{"range":{"Updated_at":{"lte":1554778425}}}]}}, "fields": ["*"], "_source": true}' \
+  --offsetFieldName=External_id \
+  --params='{"preference": "_shards:1"}' \
+  --limit=20 \
+  --offset=0 \
+  --type=data
