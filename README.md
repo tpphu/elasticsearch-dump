@@ -510,9 +510,10 @@ Built at [TaskRabbit](https://www.taskrabbit.com)
   --output-index=sendo_new_filter_left_v8/product \
   --searchBody='{"query":{"bool":{"must":[{"range":{"Updated_at":{"lte":1554778425}}}]}}, "fields": ["*"], "_source": true}' \
   --offsetFieldName=External_id \
+  --offset=0 \
   --params='{"preference": "_shards:0"}' \
   --limit=20 \
-  --offset=0 \
+  
   --type=data
 
 ./bin/elasticdump \
@@ -522,7 +523,7 @@ Built at [TaskRabbit](https://www.taskrabbit.com)
   --output-index=sendo_new_filter_left_v8/product \
   --searchBody='{"query":{"bool":{"must":[{"range":{"Updated_at":{"lte":1554778425}}}]}}, "fields": ["*"], "_source": true}' \
   --offsetFieldName=External_id \
+  --offset=0 \
   --params='{"preference": "_shards:1"}' \
   --limit=20 \
-  --offset=0 \
   --type=data
