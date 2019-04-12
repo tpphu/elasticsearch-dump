@@ -521,6 +521,7 @@ Built at [TaskRabbit](https://www.taskrabbit.com)
 
 - How to dump and import product index with shard:1, order by External_id and by Updated_at range
 
+```shell
 ./bin/elasticdump \
   --input=http://test.sendo.vn:3000/ \
   --input-index=sendo_new_filter_left_v8/product \
@@ -532,3 +533,4 @@ Built at [TaskRabbit](https://www.taskrabbit.com)
   --params='{"preference": "_shards:1"}' \
   --limit=20 \
   --type=data
+```
