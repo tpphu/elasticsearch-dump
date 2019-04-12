@@ -513,7 +513,6 @@ Built at [TaskRabbit](https://www.taskrabbit.com)
   --offset=0 \
   --params='{"preference": "_shards:0"}' \
   --limit=20 \
-  
   --type=data
 
 ./bin/elasticdump \
