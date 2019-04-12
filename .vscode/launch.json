@@ -7,7 +7,7 @@
         {
             "type": "node",
             "request": "launch",
-            "name": "Launch Program",
+            "name": "Launch Program With offsetFieldName",
             "program": "${workspaceFolder}/bin/elasticdump",
             "args": [
                 "--input",
@@ -28,6 +28,24 @@
                 "20",
                 "--params",
                 "{\"preference\": \"_shards:0\"}",
+                "--type",
+                "data"
+            ]
+        },
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "Launch Program With Default Scroll",
+            "program": "${workspaceFolder}/bin/elasticdump",
+            "args": [
+                "--input",
+                "http://test.sendo.vn:3000/",
+                "--input-index",
+                "sendo_new_filter_left_v8/product",
+                "--output",
+                "http://elastic:changeme@localhost:9200/",
+                "--output-index",
+                "sendo_new_filter_left_v8/product",
                 "--type",
                 "data"
             ]
