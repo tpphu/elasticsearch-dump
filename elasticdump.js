@@ -87,16 +87,17 @@ class elasticdump extends EventEmitter {
     return validationErrors
   }
 
-  dump (callback, continuing, limit, offset, totalWrites) {
+  dump (callback, continuing, searchKeeperInfo) {
     const self = this
 
     if (self.validationErrors.length > 0) {
       self.emit('error', {errors: self.validationErrors})
       callback(new Error('There was an error starting this dump'))
     } else {
-      if (!limit) { limit = self.options.limit }
-      if (!offset) { offset = self.options.offset }
-      if (!totalWrites) { totalWrites = 0 }
+      if (!searchKeeperInfo) { searchKeeperInfo = {} }
+      if (!searchKeeperInfo.limit) { searchKeeperInfo.limit = self.options.limit }
+      if (!searchKeeperInfo.offset) { searchKeeperInfo.offset = self.options.offset }
+      if (!searchKeeperInfo.totalWrites) { searchKeeperInfo.totalWrites = 0 }
 
       if (continuing !== true) {
         self.log('starting dump')
@@ -110,10 +111,10 @@ class elasticdump extends EventEmitter {
         }
       }
 
-      self.input.get(limit, offset, (err, data) => {
+      self.input.get(searchKeeperInfo, (err, data) => {
         if (err) { self.emit('error', err) }
         if (!err || (self.options['ignore-errors'] === true || self.options['ignore-errors'] === 'true')) {
-          self.log('got ' + data.length + ' objects from source ' + self.inputType + ' (offset: ' + offset + ')')
+          self.log('got ' + data.length + ' objects from source ' + self.inputType + ' (offset: ' + searchKeeperInfo.offset + ')')
           if (self.modifiers.length) {
             for (let i = 0; i < data.length; i++) {
               self.modifiers.forEach(modifier => {
@@ -121,7 +122,7 @@ class elasticdump extends EventEmitter {
               })
             }
           }
-          self.output.set(data, limit, offset, (err, writes) => {
+          self.output.set(data, searchKeeperInfo, (err, writes) => {
             let toContinue = true
 
             if (err) {
@@ -132,29 +133,33 @@ class elasticdump extends EventEmitter {
                 toContinue = false
               }
             } else {
-              totalWrites += writes
+              searchKeeperInfo.totalWrites += writes
               if (data.length > 0) {
-                self.log('sent ' + data.length + ' objects to destination ' + self.outputType + ', wrote ' + writes)
-                offset = offset + data.length
+                self.log('sent ' + data.length + ' objects to destination ' + self.outputType + ', wrote ' + writes + ', totalWrites ' + searchKeeperInfo.totalWrites)
+                if( this.options.offsetFieldName ) {
+                  searchKeeperInfo.offset = data[data.length - 1].sort[0]
+                } else {
+                  searchKeeperInfo.offset += data.length
+                }
               }
             }
 
             if (data.length > 0 && toContinue) {
-              return self.dump(callback, true, limit, offset, totalWrites)
+              return self.dump(callback, true, searchKeeperInfo)
             } else if (toContinue) {
-              self.log('Total Writes: ' + totalWrites)
+              self.log('Total Writes: ' + searchKeeperInfo.totalWrites)
               self.log('dump complete')
-              if (typeof callback === 'function') { return callback(null, totalWrites) }
+              if (typeof callback === 'function') { return callback(null, searchKeeperInfo.totalWrites) }
             } else if (toContinue === false) {
-              self.log('Total Writes: ' + totalWrites)
+              self.log('Total Writes: ' + searchKeeperInfo.totalWrites)
               self.log('dump ended with error (set phase)  => ' + String(err))
-              if (typeof callback === 'function') { return callback(err, totalWrites) }
+              if (typeof callback === 'function') { return callback(err, searchKeeperInfo.totalWrites) }
             }
           })
         } else {
-          self.log('Total Writes: ' + totalWrites)
+          self.log('Total Writes: ' + searchKeeperInfo.totalWrites)
           self.log('dump ended with error (get phase) => ' + String(err))
-          if (typeof callback === 'function') { return callback(err, totalWrites) }
+          if (typeof callback === 'function') { return callback(err, searchKeeperInfo.totalWrites) }
         }
       })
     }

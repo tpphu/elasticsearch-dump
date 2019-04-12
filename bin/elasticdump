@@ -12,6 +12,7 @@ const defaults = {
   size: -1,
   limit: 100,
   offset: 0,
+  offsetFieldName: null,
   debug: false,
   type: 'data',
   delete: false,
@@ -24,6 +25,8 @@ const defaults = {
   inputTransport: null,
   outputTransport: null,
   searchBody: null,
+  searchRangeFieldName:null,   // @next
+  searchRangeFieldValues:null, // @next
   headers: null,
   sourceOnly: false,
   jsonLines: false,

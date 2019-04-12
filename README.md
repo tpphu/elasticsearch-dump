@@ -500,3 +500,37 @@ An example transform for anonymizing data on-the-fly can be found in the `transf
 Inspired by https://github.com/crate/elasticsearch-inout-plugin and https://github.com/jprante/elasticsearch-knapsack
 
 Built at [TaskRabbit](https://www.taskrabbit.com)
+
+## Sendo Note
+
+- How to dump and import product index with shard:0, order by External_id and by Updated_at range
+
+```shell
+./bin/elasticdump \
+  --input=http://localhost:3000/ \
+  --input-index=sendo_new_filter_left_v8/product \
+  --output=http://elastic:changeme@localhost:9200/ \
+  --output-index=sendo_new_filter_left_v8/product \
+  --searchBody='{"query":{"bool":{"must":[{"range":{"Updated_at":{"lte":1554778425}}}]}}, "fields": ["*"], "_source": true}' \
+  --offsetFieldName=External_id \
+  --offset=0 \
+  --params='{"preference": "_shards:0"}' \
+  --limit=20 \
+  --type=data
+```
+
+- How to dump and import product index with shard:1, order by External_id and by Updated_at range
+
+```shell
+./bin/elasticdump \
+  --input=http://localhost:3000/ \
+  --input-index=sendo_new_filter_left_v8/product \
+  --output=http://elastic:changeme@localhost:9200/ \
+  --output-index=sendo_new_filter_left_v8/product \
+  --searchBody='{"query":{"bool":{"must":[{"range":{"Updated_at":{"lte":1554778425}}}]}}, "fields": ["*"], "_source": true}' \
+  --offsetFieldName=External_id \
+  --offset=0 \
+  --params='{"preference": "_shards:1"}' \
+  --limit=20 \
+  --type=data
+```
